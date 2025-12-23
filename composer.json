@@ -1,16 +1,17 @@
 {
-    "name": "halfshellstudios/package-sample",
+    "name": "styxofdynamite/rock-paper-scissors",
     "type": "library",
     "version": "1.0.0",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "HalfShellStudios\\PackageSample\\": "src/"
+            "StyxOfDynamite\\RockPaperScissors\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Stuart Todd"
+            "name": "Luke Storer",
+            "email": "hello@lukestorer.dev"
         }
     ],
     "minimum-stability": "stable",
