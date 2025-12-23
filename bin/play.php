@@ -7,6 +7,8 @@ use StyxOfDynamite\RockPaperScissors\Move;
 use StyxOfDynamite\RockPaperScissors\Moves\Paper;
 use StyxOfDynamite\RockPaperScissors\Moves\Rock;
 use StyxOfDynamite\RockPaperScissors\Moves\Scissors;
+use StyxOfDynamite\RockPaperScissors\Rules\MatchupResolver;
+use StyxOfDynamite\RockPaperScissors\Rules\RuleSet;
 
 require \dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -15,6 +17,8 @@ $registry = [
     'paper' => Paper::class,
     'scissors' => Scissors::class,
 ];
+
+$resolver = new MatchupResolver(RuleSet::standard());
 
 if ($argc < 3) {
     fwrite(STDERR, "Usage: php bin/play.php <move1> <move2>\n");
@@ -28,7 +32,7 @@ if ($argc < 3) {
 $moveOne = createMove($moveOneName, $registry);
 $moveTwo = createMove($moveTwoName, $registry);
 
-$result = $moveOne->compare($moveTwo);
+$result = $resolver->resolve($moveOne, $moveTwo);
 
 if ($result === 0) {
     printf("%s vs %s => tie\n", $moveOne->name(), $moveTwo->name());

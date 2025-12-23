@@ -13,10 +13,4 @@ class Scissors extends Move
     {
         return 'Scissors';
     }
-
-    #[\Override]
-    public function beats(Move $other): bool
-    {
-        return $other instanceof Paper;
-    }
 }

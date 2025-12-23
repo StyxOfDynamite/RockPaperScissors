@@ -1,16 +1,20 @@
 # Rock / Paper / Scissors (PHP 8.3)
 
-The core domain is modeled with a `Move` base class and concrete moves that implement a `beats` interface. A `compare` helper returns `1` (win), `0` (tie), or `-1` (loss).
+The core domain now separates moves from the win/lose rules. `Move` implementations only describe their identity (`name()`), while a `RuleSet` and `MatchupResolver` decide outcomes. This keeps existing moves closed to modification when you add new ones.
 
-Basic OOP usage:
+Basic usage:
 ```
 use StyxOfDynamite\RockPaperScissors\Moves\Rock;
 use StyxOfDynamite\RockPaperScissors\Moves\Paper;
+use StyxOfDynamite\RockPaperScissors\Rules\MatchupResolver;
+use StyxOfDynamite\RockPaperScissors\Rules\RuleSet;
+
+$resolver = new MatchupResolver(RuleSet::standard());
 
 $rock = new Rock();
 $paper = new Paper();
 
-$result = $rock->compare($paper); // -1 (Paper beats Rock)
+$result = $resolver->resolve($rock, $paper); // -1 (Paper beats Rock)
 ```
 
 Quick CLI demo:
@@ -21,9 +25,10 @@ php bin/play.php rock rock    # tie
 ```
 
 #### Adding a new move
-1. Create a class under `src/Moves/` extending `StyxOfDynamite\RockPaperScissors\Move` and implement `name()` plus `beats(Move $other): bool`.
+1. Create a class under `src/Moves/` extending `StyxOfDynamite\RockPaperScissors\Move` that returns its `name()`.
 2. Register it in the `$registry` array inside `bin/play.php` so the CLI can instantiate it by name.
-3. (Optional) Add tests for the new rules.
+3. Add rules to the `RuleSet` (e.g. extend the map passed to `RuleSet::fromBeatsMap()` or compose a new instance) without touching existing move classes.
+4. (Optional) Add tests for the new rules.
 
 ## Conclusion
 
